@@ -1,4 +1,4 @@
-# eml-for-js
+# elm-for-js
 Community driven Elm guide for JS people
 
 This guide will augment the official Elm docs as needed, for a smooth transitions for people coming from JavaScript.
