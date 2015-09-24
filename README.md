@@ -5,7 +5,7 @@ This guide will augment the official Elm docs as needed, for a smooth transition
 
 ## Type Annotations
 
-Writing them is optional, but highly encouraged. Type annotations improves code by helping you think about what the function should be doing, and serve as compiler-verified documentation. In addition, if you ever want to publish a third-party library, you need type annotations.
+Writing them is optional, but highly encouraged. Type annotations improve code by helping you think about what the function should be doing, and serve as compiler-verified documentation. In addition, if you ever want to publish a third-party library, you need type annotations.
 
 ```elm
 -- A variable of type Int.
@@ -22,7 +22,6 @@ In JavaScript, params are handled at the same time. In Elm, they are [curried](h
 ```elm
 -- Update is a function that will take an Action param, and return a function that will take a Model param. THAT fn will return a Model.
 update : Action -> Model -> Model
-init count = count
 ```
 
 
