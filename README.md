@@ -3,6 +3,21 @@ Community driven Elm guide for JS people
 
 This guide will augment the official Elm docs as needed, for a smooth transitions for people coming from JavaScript.
 
+## Getting started
+1. Try the [Hello World](http://elm-lang.org/try) online
+2. Install Elm via [npm](https://www.npmjs.com/package/elm) or the [installer](http://elm-lang.org/install).
+3. Get Hello World running locally
+4. Work through the [architecture examples](https://github.com/evancz/elm-architecture-tutorial/#the-elm-architecture). Type manually, look in `examples/` for help.
+
+## Getting Hello World running locally
+1. Install Elm
+2. Create a new file `Main.elm` in a new folder.
+3. `$ elm package install` to set up `elm-package.json` and `elm-stuff/` for deps (similar to node).
+4. Paste the source from the [Hello World example](http://elm-lang.org/examples/hello-html) to your local `Main.elm` file.
+5. `$ elm install package evancz/elm-html` to install the package dependency.
+6. `$ elm-reactor` to get the dev server running at `http://0.0.0.0:8000/`.
+7. Success!
+
 ## Type Annotations
 
 Writing them is optional, but highly encouraged. Type annotations improve code by helping you think about what the function should be doing, and serve as compiler-verified documentation. In addition, if you ever want to publish a third-party library, you need type annotations.
