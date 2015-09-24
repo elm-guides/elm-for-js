@@ -6,7 +6,7 @@ This guide will augment the official Elm docs as needed, for a smooth transition
 ## Getting started
 1. Try the [Hello World](http://elm-lang.org/try) online
 2. Install Elm via [npm](https://www.npmjs.com/package/elm) or the [installer](http://elm-lang.org/install).
-3. Get Hello World running locally
+3. Get Hello World [running locally](https://github.com/elm-guides/elm-for-js#getting-hello-world-running-locally)
 4. Work through the [architecture examples](https://github.com/evancz/elm-architecture-tutorial/#the-elm-architecture). Type manually, look in `examples/` for help.
 
 ## Getting Hello World running locally
@@ -14,7 +14,7 @@ This guide will augment the official Elm docs as needed, for a smooth transition
 2. Create a new file `Main.elm` in a new folder.
 3. `$ elm package install` to set up `elm-package.json` and `elm-stuff/` for deps (similar to node).
 4. Paste the source from the [Hello World example](http://elm-lang.org/examples/hello-html) to your local `Main.elm` file.
-5. `$ elm install package evancz/elm-html` to install the package dependency.
+5. `$ elm install package evancz/elm-html` to install the missing package dependency.
 6. `$ elm-reactor` to get the dev server running at `http://0.0.0.0:8000/`.
 7. Success!
 
@@ -44,8 +44,8 @@ If you see mistakes, or something you want covered, open an issue or a PR.
 
 ## TODO:
 Add sections for
-- [ ] Package management (compare to node_modules, npm)
-- [ ] Type Annotations
+- [x] Package management (compare to node_modules, npm)
+- [x] Type Annotations
 - [ ] Data types (try not to duplicate official docs)
 - [ ] Basic Syntax
 - [ ] Program structure and flow
