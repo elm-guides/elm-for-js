@@ -40,6 +40,8 @@ In JavaScript, params are handled at the same time. In Elm, they are [curried](h
 update : Action -> Model -> Model
 ```
 
+## Great elm articles
+- [Building a signup form in Elm](http://noredinktech.tumblr.com/post/129641182738/building-a-live-validated-signup-form-in-elm)
 
 If you see mistakes, or something you want covered, open an issue or a PR.
 
