@@ -52,3 +52,5 @@ Add sections for
 - [ ] Data types (try not to duplicate official docs)
 - [ ] Basic Syntax
 - [ ] Program structure and flow
+- [ ] How to read the API docs
+- [ ] Package catalog link. 
