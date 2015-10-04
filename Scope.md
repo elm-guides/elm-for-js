@@ -60,9 +60,10 @@ The following code is valid Elm and JS:
 ```elm
 answer = 42
 ```
-In JS, it's a global variable. Best practice is to use `var` and function scope so that it's no longer a variable. Elm
-is immutable, so while it's still global, it's not longer a variable. It can't vary. Therefore, having it global (at
-least to the module) is harmless.
+
+In JS, `answer` is a global variable, but best practice is to use `var` and function scope so that it's no longer
+global. Elm is immutable, so while it's still global, it's not longer a variable. It can't vary. Therefore, having it
+global (at least to the module) is harmless.
 
 In JavaScript, functions can either be declared or assigned to variables.
 
@@ -72,7 +73,7 @@ var add = function(a, b){ return a + b }
 ```
 
 These two lines of JS do subtly different things, thanks to hoisting, and in both cases the definition of `add` is
-mutable.. In some ways, the following two snippets of Elm code also preserve the distinction between declaring a named
+mutable. In some ways, the following two snippets of Elm code also preserve the distinction between declaring a named
 function, and assigning an anonymous function to a named variable. However, they behave identically.
 
 ```elm
