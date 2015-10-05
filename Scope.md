@@ -90,7 +90,7 @@ You can also define types at the top level, like `type alias Model = Int`.
 ## Local Definitions
 
 The most common form of a local definition is a function argument. Exactly like JavaScript, any argument is visible from
-anywhere inside the function. (Unless you mask it by defining another value of the same name. Don't do that.)
+anywhere inside the function.
 
 The other form of local definitions are created using a `let... in...` statement. In this example, some values are
 function arguments, some are defined in the `let`, and some (the math operators) are imported automatically from Basics.
@@ -113,4 +113,17 @@ radToDeg rad =
     let piInDegrees = 180
         conversionFactor = piInDegrees/pi
     in conversionFactor * rad
+```
+
+Be aware that if you define the same name multiple times, the innermost definition is used. Usually you should just
+avoid the issue entirely by using unique names.
+
+```elm
+foo = 0
+
+silly foo =
+  let foo = 12
+  in foo
+
+silly 5 == 12
 ```
