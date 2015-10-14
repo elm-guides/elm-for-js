@@ -103,7 +103,7 @@ distanceFrom (originX, originY) (x, y) =
 ```
 
 After the `let`, you can place as many definitions as you like, just like at the top level. They can be fixed values or
-function, and you can even write type annotations, although you can't define new types.
+functions, and you can even write type annotations, although you can't define new types.
 
 The expression after the `in`, where all the definitions are in scope, is what the entire `let` expression becomes.
 Actually, the definitions are in scope even as you write more definitions. Here's a somewhat contrived example.
