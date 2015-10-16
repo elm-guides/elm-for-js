@@ -5,9 +5,9 @@ Java, type annotations will look very strange. However, once you know how to rea
 `int strcmp(const char *s1, const char *s2);`. That's a good thing, because type annotations aren't for the compiler (it
 has type inference and can figure things out) but for you, the programmer.
 
-The most important use when you're starting out is that the docs for every function in the standard library begin with
-the type annotation. The annotation tells you how many arguments a function takes, what their types are, what order to
-pass them, and what the return type is. This information is not repeated elsewhere.
+The most important reason to know about type annotations  when you're starting out is that the docs for every function
+in the standard library have them. The annotation tells you how many arguments a function takes, what their types are,
+what order to pass them, and what the return type is. This information is not repeated elsewhere.
 
 Once you know how to read an annotation, it's fairly easy to write them. Doing so is is optional, but highly encouraged.
 Type annotations improve code by helping you think about what the function should be doing, and serve as
@@ -27,8 +27,8 @@ answer = 42
 You can read "answer has type Int; answer equals forty-two".
 
 Common primitive types include `Int`, `Float`, `Bool`, and `String`. You can also pair up types into tuples, for example
-`(Int, Bool)`. This expands to arbitrarily many elements, i.e. `(Int, Float, Int)` is a 3-tuple with first element Int,
-second Float, third Int.
+`(Int, Bool)`. This expands to arbitrarily many elements, i.e. `(Int, Float, Int)` is a 3-tuple with first element `Int`,
+second `Float`, third `Int`.
 
 In case you haven't noticed yet, types always begin with a capital letter.
 
@@ -43,19 +43,19 @@ Things get interesting with multiple arrows, for example, `update : Action -> Mo
 Action and a Model as arguments (in that order), and returns a Model. Or, "update has type Action goes to Model goes to
 Model."
 
-What's really going on is that the type annotation is telling you apart *partial application*: you can give a function
+What's really going on is that the type annotation is telling you about *partial application*: you can give a function
 only some of its arguments, and get a function as a result. You can always get the new function's type annotation by
 covering up part of the left side of the original function's annotation.
 
 ```elm
 example : Model -> Model
-example : update someAction
+example = update someAction
 ```
 
 There are implied parentheses in the annotation, so we could also write: `update : Action -> (Model -> Model)`.
 
-You probably don't need to worry about currying too much at first. Just think of the type after the last arrow as the
-return value, and the others as the arguments to your function.
+You probably don't need to worry about partial application, also know as currying, too much at first. Just think of the
+type after the last arrow as the return value, and the others as the arguments to your function.
 
 ## Higher Order Functions
 
@@ -68,7 +68,6 @@ of a list of Float, returning a new list of Ints as a result.
 ```elm
 specialMap : (Float -> Int) -> List Float -> List Int
 ```
-
 
 The first argument of this function needs to be a function, that takes a Float as a parameter and returns an Int. When
 you read this annotation, it may help to say "Float goes to Int" a little bit faster, and then pause. Here, the brackets
@@ -116,5 +115,36 @@ not to mistake `Signal.Message`, which is just the type, with a signal of messag
 Signal.Message`, or if you have the right import, `Signal Message`. Again, the capitalized word before a dot is always a
 module.
 
-**TODO: talk about records**
+## Records
+
+A record is like a JS object, except you know at compile-time that the fields you access will be there. Also like
+JavaScript, they're written with brackets. *Unlike* JavaScript, records values use equals between key and value; when
+written with colons, it's a record *type*. Here's a simple record:
+
+``elm
+point : {x : Float, y : Float}
+point = {x = 3.2, y = 2.5}
+``
+
+It's possible to write functions that work on records as long as they have the right fields, ignoring any other fields.
+
+```elm
+planarDistance : {a | x : Float, y : Float} -> {b | x : Float, y : Float} -> Float
+planarDistance p1 p2 =
+  let dx = p2.x - p1.x
+      dy = p2.y - p1.y
+  in sqrt (dx^2 + dy^2)
+```
+
+The `{a |` part of the annotation indicates a base record, with the type variable `a`, is extended. Then we list the
+fields it's extended with, and what their types are. In the simplest cast, `a` can be the empty record, i.e. there are
+no extra fields. We use a different type variable, `b`, for the second argument to indicate that the two records don't
+have to be the same type. For example:
+
+```elm
+point3D = {x = 1.0, y = 6.3, z = -0.9}
+
+dist = planarDistance point point3D
+```
+
 **TODO: talk about number, comparable, appendable**
