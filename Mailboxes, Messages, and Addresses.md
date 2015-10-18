@@ -249,9 +249,9 @@ The takeaway of this example is that every time the model updates, `checkboxes` 
 
 When implementing, you need to watch for two things. First, you have to feed the checkboxes their own state from the model (that's the purpose of `statuses`). That's because every time you check a box, the model is updated, which causes a new set of checkboxes to be made, hopefully with the newly updated state. Second, you need to ensure that you can uniquely identify which datum the checkbox refers to (the `SongID`). If you have many actions per datum that are controlled by checkboxes, you need to track that too (either as a parameter of `Check` or another `Action`).
 
-## The Future
+## The Future?
 
-So far, I've tried to remain objective in how mailboxes work and can be used. In this section, I'm going to talk briefly about a [proposal I made](https://github.com/elm-lang/elm-plans/issues/7) which would slightly alter the library to further reduce boilerplate and (hopefully) make it more intuitive. Let me stress that the proposal has not been accepted and might not ever be incorporated into Elm.
+So far, I've tried to remain objective in how mailboxes work and can be used. In this section, I'm going to talk briefly about a [proposal I made](https://gist.github.com/mgold/f3527359996fdf295843) which would slightly alter the library to further reduce boilerplate and (hopefully) make it more intuitive. Let me stress that the proposal has not been accepted and might not ever be incorporated into Elm.
 
 The big change is that `myMailbox.address` would be replaced with a `dispatch : a -> Message` field. It's like `Signal.message` is called on the address for you. How would this change our checkboxes?
 
