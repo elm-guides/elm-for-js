@@ -5,14 +5,14 @@ Java, type annotations will look very strange. However, once you know how to rea
 `int strcmp(const char *s1, const char *s2);`. That's a good thing, because type annotations aren't for the compiler (it
 has type inference and can figure things out) but for you, the programmer.
 
-The most important reason to know about type annotations  when you're starting out is that the docs for every function
+The most important reason to know about type annotations when you're starting out is that the docs for every function
 in the standard library have them. The annotation tells you how many arguments a function takes, what their types are,
 what order to pass them, and what the return type is. This information is not repeated elsewhere.
 
 Once you know how to read an annotation, it's fairly easy to write them. Doing so is is optional, but highly encouraged.
 Type annotations improve code by helping you think about what the function should be doing, and serve as
 compiler-verified documentation. (You know how an out-of-date comment is worse than no comment at all? Well, type
-annotations never get out of date.) In addition, if you ever want to publish a third-party library, you need type
+annotations never get out of date.) In addition, if you ever want to publish a third-party library, you will need type
 annotations.
 
 ## Definitions
@@ -54,7 +54,7 @@ example = update someAction
 
 There are implied parentheses in the annotation, so we could also write: `update : Action -> (Model -> Model)`.
 
-You probably don't need to worry about partial application, also know as currying, too much at first. Just think of the
+You probably don't need to worry about partial application, also known as currying, too much at first. Just think of the
 type after the last arrow as the return value, and the others as the arguments to your function.
 
 ## Higher Order Functions
@@ -87,33 +87,29 @@ function thanks to currying. We could also write `roundMap xs = specialMap round
 ## Type Variables
 
 If you look at the List library, this isn't actually how
-[List.map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map) is defined. Instead, it has lowercase
-type names, which are type variables:
+`[List.map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map)` is defined. Instead, it has lowercase
+type names, which are *type variables*:
 
 ```elm
 List.map : (a -> b) -> List a -> List b
 ```
 
-This means that the function works for any types `a` and `b`, as long as we've fixed their values. So we could give it
-a `(Float -> Int)` and a `List Float`, or we could give a `(String -> Action)` and a `List String`, and so on. In other
-words, we can substitute specific types in for the variables `a` and `b`, and the function will still work.
+This means that the function works for any types `a` and `b`, as long as we've fixed their values, which usually happens
+by passing arguments whose types we know. So we could give it a `(Float -> Int)` and a `List Float`, or we could give a
+`(String -> Action)` and a `List String`, and so on. (This use of "variable" is closer to algebra than JavaScript, in
+that it's something you or the compiler find based on constraints, not explicitly set to whatever you need it to be.)
 
-This lets us write generic code. List.map then can traverse a list and apply a function to it, without knowing what's in
-the list. Only the function applied to each element needs to know what type those elements are.
+By convention, type variables are single letters, although (almost) any lowercase string will work. Occasionally it's
+helpful to use a descriptive word, especially if you have more than one type variable.
 
-## Type Constructors
+Type variables let us write generic code, like lists and other containers that can hold any type of value. Each
+particular container can only hold one type, but you get to pick what that is. Concretely, `List.map` then can traverse
+a list and apply a function to it, without knowing what's in the list. Only the function applied to each element needs
+to know what type those elements are.
 
-We've already seen `List`, and we always saw it beside another type or type variable, like `List Int` or `List a`. You
-can read `List a` as "List a" or "List of a".
-
-This is because `List` isn't a type, it's a type constructor. When you give it a type as an argument, only then do you
-get an actual type. So `List Int` is a type, and again `List` on its own is a type constructor.
-
-Another common type constructor is `Signal`, which is defined in a module also named `Signal`, as are a few other types
-like `Message`. Both `Signal` and `List` do not need to be prefixed with a module name, but `Message` does. So be sure
-not to mistake `Signal.Message`, which is just the type, with a signal of messages! You'd write that as `Signal
-Signal.Message`, or if you have the right import, `Signal Message`. Again, the capitalized word before a dot is always a
-module.
+If `List a` is a list of any type, what is just `List`? Technically it's called a *type constructor*, but the real
+answer is that it's not really anything. It can't really exist on its own. The best way to think of it is that `List a`
+is the base type, and sometimes the type variable gets replaced with a real type.
 
 ## Records
 
@@ -121,12 +117,13 @@ A record is like a JS object, except you know at compile-time that the fields yo
 JavaScript, they're written with brackets. *Unlike* JavaScript, records values use equals between key and value; when
 written with colons, it's a record *type*. Here's a simple record:
 
-``elm
+```elm
 point : {x : Float, y : Float}
 point = {x = 3.2, y = 2.5}
-``
+```
 
-It's possible to write functions that work on records as long as they have the right fields, ignoring any other fields.
+Usually you'll just use a specific record type. But it's also possible to write functions that work on records as long
+as they have the right fields, ignoring any other fields.
 
 ```elm
 planarDistance : {a | x : Float, y : Float} -> {b | x : Float, y : Float} -> Float
@@ -136,10 +133,10 @@ planarDistance p1 p2 =
   in sqrt (dx^2 + dy^2)
 ```
 
-The `{a |` part of the annotation indicates a base record, with the type variable `a`, is extended. Then we list the
-fields it's extended with, and what their types are. In the simplest cast, `a` can be the empty record, i.e. there are
-no extra fields. We use a different type variable, `b`, for the second argument to indicate that the two records don't
-have to be the same type. For example:
+The `{a |` part of the annotation indicates a base record, of type `a`, is extended. Then we list the fields it's
+extended with, and what their types are. In the simplest cast, `a` can be the empty record, i.e. there are no extra
+fields. We use a different type variable, `b`, for the second argument to indicate that the two records don't have to be
+the same type. For example:
 
 ```elm
 point3D = {x = 1.0, y = 6.3, z = -0.9}
@@ -147,4 +144,22 @@ point3D = {x = 1.0, y = 6.3, z = -0.9}
 dist = planarDistance point point3D
 ```
 
-**TODO: talk about number, comparable, appendable**
+## Constrained types
+
+Elm has three special type variables that indicate that the value needs to one of a few different types, but not just
+any type.
+
+A `number` is either an `Int` or `Float`. A number literal without a decimal point is a `number`. Numbers support
+basic arithmetic (except division, which is handled separately for each type).
+
+A `comparable` can be a number, character, string, or recursively a list or tuple of comparables. Surprisingly enough,
+comparables can be compared with operations like `(>)`. Elm's dictionaries and sets are implemented as binary search
+trees, so the keys or elements must be comparable.
+
+An `appendable` can be a string, text (i.e. with typesetting information), or a list (containing any type). Two
+appendables of the same type can be appended with `(++)`.
+
+To use any of these types, just use their name in an annotation instead of a specific type or type variable.
+
+If one of these types appears multiple times in a type annotation, all occurrences must resolve to the same type. You
+can allow them to be different by sticking something on to the end of the type, like `appendable2` or similar.
