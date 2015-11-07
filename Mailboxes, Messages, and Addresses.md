@@ -37,9 +37,11 @@ So a mailbox is a record with a perfectly ordinary signal, and this new Address 
 mailbox : a -> Mailbox a
 ```
 
-Okay, so this just takes the initial value of the new signal and returns the new mailbox. Two other things to note: first, don't use `Signal.map` with this function. That would give you a signal of a record containing a signal, which puts us back into the forbidden world of signals of signals. One thing to watch out for is that in type annotations, you'll often see `myMailbox : Signal.Mailbox`. The period is critically important: it's not a signal of mailboxes, it's just the `Mailbox` type from the `Signal` module. You can get around this with `import Signal exposing (Mailbox)`.
+Okay, so this just takes the initial value of the new signal and returns the new mailbox. A few things to note: first, don't use `Signal.map` with this function. That would give you a signal of a record containing a signal, which puts us back into the forbidden world of signals of signals.
 
-Second, `mailbox` is one of the few impure functions in Elm. By "pure", we mean that if you call a function with the same arguments, you get the same result. That's true of almost every function in Elm (and _not_ true of functions in other languages that look at global mutable state.) But here, we're cheating: if you call `mailbox myThing` twice, you get two different mailboxes.
+Second, you'll often see type annotations like `myMailbox : Signal.Mailbox MyType`. The period is critically important: it's not a signal of mailboxes, it's just the `Mailbox` type from the `Signal` module. You can get around this with `import Signal exposing (Mailbox)`.
+
+Third, `mailbox` is one of the few impure functions in Elm. By "pure", we mean that if you call a function with the same arguments, you get the same result. That's true of almost every function in Elm (and _not_ true of functions in other languages that look at global mutable state.) But here, we're cheating: if you call `mailbox myThing` twice, you get two different mailboxes.
 
 What this means in practice is that you have a specific and constant number of mailboxes in your program. You don't make more dynamically and you typically don't make one inside a function. If you set things up like I'm going to show you, you'll only have _one_ mailbox in your program, or at least only one per module.
 
