@@ -45,7 +45,7 @@ import Dict exposing (Dict)
 ```
 
 The `Dict` in parentheses refers to the type, not the module. All the module-scoped values like `Dict.insert` are still
-available. You can expose as many values and types from a module by separating them with commas inside the parentheses.
+available. You can expose multiple values and types from a module by separating them with commas inside the parentheses.
 You can find more details on the syntax page, but this practice in general is discouraged. (This is why the language
 forces you to type the long `exposing` keyword.)
 
@@ -62,7 +62,7 @@ answer = 42
 ```
 
 In JS, `answer` is a global variable, but best practice is to use `var` and function scope so that it's no longer
-global. Elm is immutable, so while it's still global, it's not longer a variable. It can't vary. Therefore, having it
+global. Elm is immutable, so while it's still global, it's no longer a variable. It can't vary. Therefore, having it
 global (at least to the module) is harmless.
 
 In JavaScript, functions can either be declared or assigned to variables.
