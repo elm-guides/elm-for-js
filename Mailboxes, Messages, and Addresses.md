@@ -159,8 +159,8 @@ step : Action -> Model -> Model
 step a m =
   case a of
     NoOp -> m
-    Shield Forward b -> {m| forward <- b}
-    Shield Rear b    -> {m| rear <- b}
+    Shield Forward b -> {m| forward = b}
+    Shield Rear b    -> {m| rear = b}
 
 model : Signal Model
 model = Signal.foldp step model0 myMailbox.signal
@@ -188,12 +188,12 @@ Creating the initial model is the same as before, but the checkboxes are defined
 ```elm
 cbForward =
   checkbox
-  (\b -> Signal.message myMailbox.address (\m -> {m| forward <- b}))
+  (\b -> Signal.message myMailbox.address (\m -> {m| forward = b}))
   fwd0
 
 cbRear =
   checkbox
-  (\b -> Signal.message myMailbox.address (\m -> {m| rear <- b}))
+  (\b -> Signal.message myMailbox.address (\m -> {m| rear = b}))
   rear0
 ```
 
@@ -267,7 +267,7 @@ cbForward =
 -- transformations style
 cbForward =
   checkbox
-  (\b -> myMailbox.dispatch (\m -> {m| forward <- b}))
+  (\b -> myMailbox.dispatch (\m -> {m| forward = b}))
   fwd0
 ```
 
@@ -312,8 +312,8 @@ step : Action -> Model -> Model
 step a m =
   case a of
     NoOp -> m
-    Shield Forward b -> {m| forward <- b}
-    Shield Rear b    -> {m| rear <- b}
+    Shield Forward b -> {m| forward = b}
+    Shield Rear b    -> {m| rear = b}
 
 model : Signal Model
 model = Signal.foldp step model0 myMailbox.signal
@@ -346,12 +346,12 @@ myMailbox = Signal.mailbox identity
 
 cbForward =
   checkbox
-  (\b -> Signal.message myMailbox.address (\m -> {m| forward <- b}))
+  (\b -> Signal.message myMailbox.address (\m -> {m| forward = b}))
   fwd0
 
 cbRear =
   checkbox
-  (\b -> Signal.message myMailbox.address (\m -> {m| rear <- b}))
+  (\b -> Signal.message myMailbox.address (\m -> {m| rear = b}))
   rear0
 
 model : Signal Model
