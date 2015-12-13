@@ -35,7 +35,10 @@ myTuple : (String, Int, Bool)
 myTuple = ("the answer", 42, True)
 ```
 
-In case you haven't noticed yet, types always begin with a capital letter.
+In case you haven't noticed yet, types always begin with a capital letter (or open paren).
+
+There's one special type with only one value of that type. Both the type and value are read as "unit" and written as
+`()`. Unit is often used as a placeholder value, since if we know the type, we can anticipate the value.
 
 ## Functions
 
