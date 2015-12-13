@@ -1,9 +1,9 @@
 #How to Read a Type Annotation
 
 If you come from a dynamically typed language like JavaScript or Ruby, or even a statically typed C-family language like
-Java, type annotations will look very strange. However, once you know how to read them, they make a lot more sense than
-`int strcmp(const char *s1, const char *s2);`. That's a good thing, because type annotations aren't for the compiler (it
-has type inference and can figure things out) but for you, the programmer.
+Java, Elm's type annotations will look very strange. However, once you know how to read them, they make a lot more sense
+than `int strcmp(const char *s1, const char *s2);`. That's a good thing, because type annotations aren't for the
+compiler (it has type inference and can figure things out) but for you, the programmer.
 
 The most important reason to know about type annotations when you're starting out is that the docs for every function
 in the standard library have them. The annotation tells you how many arguments a function takes, what their types are,
@@ -29,6 +29,11 @@ You can read "answer has type Int; answer equals forty-two".
 Common primitive types include `Int`, `Float`, `Bool`, and `String`. You can also pair up types into tuples, for example
 `(Int, Bool)`. This expands to arbitrarily many elements, i.e. `(Int, Float, Int)` is a 3-tuple with first element `Int`,
 second `Float`, third `Int`.
+
+```elm
+myTuple : (String, Int, Bool)
+myTuple = ("the answer", 42, True)
+```
 
 In case you haven't noticed yet, types always begin with a capital letter.
 
@@ -87,7 +92,7 @@ function thanks to currying. We could also write `roundMap xs = specialMap round
 ## Type Variables
 
 If you look at the List library, this isn't actually how
-`[List.map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map)` is defined. Instead, it has lowercase
+[List.map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map) is defined. Instead, it has lowercase
 type names, which are *type variables*:
 
 ```elm
@@ -99,17 +104,18 @@ by passing arguments whose types we know. So we could give it a `(Float -> Int)`
 `(String -> Action)` and a `List String`, and so on. (This use of "variable" is closer to algebra than JavaScript, in
 that it's something you or the compiler find based on constraints, not explicitly set to whatever you need it to be.)
 
-By convention, type variables are single letters, although (almost) any lowercase string will work. Occasionally it's
-helpful to use a descriptive word, especially if you have more than one type variable.
+By convention, type variables are single letters starting at the beginning of the alphabet, although (almost) any
+lowercase string will work. Occasionally it's helpful to use a descriptive word, especially if you have more than one
+type variable.
 
 Type variables let us write generic code, like lists and other containers that can hold any type of value. Each
-particular container can only hold one type, but you get to pick what that is. Concretely, `List.map` then can traverse
-a list and apply a function to it, without knowing what's in the list. Only the function applied to each element needs
-to know what type those elements are.
+particular container can only hold one type, but you get to pick what that is. Then `List.map` can traverse a list and
+apply a function to it, without knowing what's in the list. Only the function applied to each element needs to know what
+type those elements are.
 
-If `List a` is a list of any type, what is just `List`? Technically it's called a *type constructor*, but the real
+If `List a` is a list of any type, what is just `List`? Technically it's called a *type constructor*, but the better
 answer is that it's not really anything. It can't really exist on its own. The best way to think of it is that `List a`
-is the base type, and sometimes the type variable gets replaced with a real type.
+is the base type, and sometimes the type variable `a` gets replaced with a real type.
 
 ## Records
 
@@ -122,8 +128,8 @@ point : {x : Float, y : Float}
 point = {x = 3.2, y = 2.5}
 ```
 
-Usually you'll just use a specific record type. But it's also possible to write functions that work on records as long
-as they have the right fields, ignoring any other fields.
+In most cases that's all you need to know about record types. But it's also possible to write functions that work on
+records as long as they have the right fields, ignoring any other fields.
 
 ```elm
 planarDistance : {a | x : Float, y : Float} -> {b | x : Float, y : Float} -> Float
@@ -162,4 +168,6 @@ appendables of the same type can be appended with `(++)`.
 To use any of these types, just use their name in an annotation instead of a specific type or type variable.
 
 If one of these types appears multiple times in a type annotation, all occurrences must resolve to the same type. You
-can allow them to be different by sticking something on to the end of the type, like `appendable2` or similar.
+can allow them to be different by sticking something on to the end of the type, like `appendable2` or similar. For
+example, if you enter `(4, 2)` into the Elm REPL, it will infer the type `(number, number')`. The apostrophe indicates
+that the second number need not be the same type as the first.

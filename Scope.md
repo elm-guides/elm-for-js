@@ -4,12 +4,13 @@ In Elm as in JavaScript, *scope* refers to what is defined, and where. Scope in 
 values do not change over time. Understanding scope is helpful because it allows you to figure out where values and
 types are coming from when you read someone else's code, including examples. It also gives us a tour of the language.
 
-Not counting syntax (e.g. `if`, `->`, and records), pretty much everything in Elm is either a literal, something you imported, or
+Not counting syntax (e.g. `if`, `->`, and `[`), pretty much everything in Elm is either a literal, something you imported, or
 something you defined.
 
 ## Literals
 These are pretty simple, and most are identical or very similar to JS. The types of literals are built into the
 language.
+
 ```elm
 True : Bool
 
@@ -94,6 +95,7 @@ anywhere inside the function.
 
 The other form of local definitions are created using a `let... in...` statement. In this example, some values are
 function arguments, some are defined in the `let`, and some (the math operators) are imported automatically from Basics.
+(And `2` is a literal.)
 
 ```elm
 distanceFrom (originX, originY) (x, y) =
@@ -103,7 +105,7 @@ distanceFrom (originX, originY) (x, y) =
 ```
 
 After the `let`, you can place as many definitions as you like, just like at the top level. They can be fixed values or
-functions, and you can even write type annotations, although you can't define new types.
+functions. You can even write type annotations, although you can't define new types.
 
 The expression after the `in`, where all the definitions are in scope, is what the entire `let` expression becomes.
 Actually, the definitions are in scope even as you write more definitions. Here's a somewhat contrived example.
@@ -125,5 +127,5 @@ silly foo =
   let foo = 12
   in foo
 
-silly 5 == 12
+silly 5 == 12 -- True
 ```
