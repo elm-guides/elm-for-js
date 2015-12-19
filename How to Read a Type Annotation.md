@@ -71,7 +71,7 @@ Like JavaScript, functions can take other functions as arguments. (We've already
 functions.)
 
 Let's look at a specialized version of the `List.map` function, which takes a function, and applies it to every element
-of a list of Float, returning a new list of Ints as a result.
+of a list of Float, returning a new list of Int as a result.
 
 ```elm
 specialMap : (Float -> Int) -> List Float -> List Int
@@ -108,11 +108,12 @@ by passing arguments whose types we know. So we could give it a `(Float -> Int)`
 that it's something you or the compiler find based on constraints, not explicitly set to whatever you need it to be.)
 
 By convention, type variables are single letters starting at the beginning of the alphabet, although (almost) any
-lowercase string will work. Occasionally it's helpful to use a descriptive word, especially if you have more than one
-type variable.
+lowercase string will work. Occasionally it's helpful to use another letter or a descriptive word, especially if you
+have more than one type variable. For example, `Dict k v` reminds us that the types variables are the keys and values.
+It's possible for a type to have any number of type variables, but more than two is rare.
 
 Type variables let us write generic code, like lists and other containers that can hold any type of value. Each
-particular container can only hold one type, but you get to pick what that is. Then `List.map` can traverse a list and
+particular container can only hold one type, but you get to pick what that is.  Then `List.map` can traverse a list and
 apply a function to it, without knowing what's in the list. Only the function applied to each element needs to know what
 type those elements are.
 
