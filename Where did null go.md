@@ -38,7 +38,7 @@ In Elm, values have types and those types are absolutely static. If a function
 expects an `Int` argument, the program will only compile if that function is
 only called with `Int` values. This prevents us from calling that function with
 `String` values, etc., but it also precludes the situation explained earlier
-where the value might be `null` or `undefined`. Not are `null` and `undefined`
+where the value might be `null` or `undefined`. Not only are `null` and `undefined`
 not included as a part of Elm, they wouldn't work regardless because `undefined`
 and `null` are not of type `Int` or any other type. This is a major contributor
 to the reliability of Elm applications.
