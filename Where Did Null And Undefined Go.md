@@ -38,10 +38,10 @@ In Elm, values have types and those types are absolutely static. If a function
 expects an `Int` argument, the program will only compile if that function is
 only called with `Int` values. This prevents us from calling that function with
 `String` values, etc., but it also precludes the situation explained earlier
-where the value might be `null` or `undefined`. Not only are `null` and `undefined`
-not included as a part of Elm, they wouldn't work regardless because `undefined`
-and `null` are not of type `Int` or any other type. This is a major contributor
-to the reliability of Elm applications.
+where the value might be `null` or `undefined`. Not only are `null` and
+`undefined` not included as a part of Elm, they wouldn't work regardless because
+`undefined` and `null` are not of type `Int` or any other type. This is a major
+contributor to the reliability of Elm applications.
 
 ## `Maybe` arises from these properties of Elm
 
@@ -64,8 +64,14 @@ simple as:
 type Maybe a = Just a | Nothing
 ```
 
-Now we know what `Maybe` looks like in Elm, but it may not yet be clear what it
-is for or why we need it.
+By defining this, we are establishing a type, `Maybe a`, and two possible _type
+constructors_ for that type, `Just a` and `Nothing`. Invoking either type
+constructor like a function or value will give us an instance of `Maybe` which
+is the particular member that we used to construct. If we want to represent a
+non-empty value of 5, we can invoke `Just 5` to get a `Maybe Int`. If we don't
+have a value, we simply pass around `Nothing` since it has no arguments. Now we
+know what `Maybe` looks like in Elm, but it may not yet be clear what it is for
+or why we need it.
 
 ## Illustrating `Maybe` by example
 
@@ -181,3 +187,86 @@ shouldBeSeven : Maybe Int
 shouldBeSeven =
   Maybe.map (\value -> value + 1) foundSix
 ```
+
+## What about representing failed operations?
+
+In JavaScript `null` and `undefined` are sometimes used to encode the fact that
+an operation has or has not successfully completed. Consider the canonical
+Node.js callback style:
+
+```javascript
+function callback(err, data) {
+  if (err) {
+    // ...handle error case
+  } else {
+    // ... error is null or undefined so we know everything is Ok
+  }
+}
+```
+
+The absence of an error indicates that there was no error. In Elm we could write
+a similar function, it might look like this:
+
+```elm
+callback : Maybe MyError -> Maybe MyData -> MyOutput
+callback maybeError maybeData =
+  case maybeError of
+    Just error ->
+      -- ...
+    Nothing ->
+      case maybeData of
+        Just data ->
+          -- ...
+        Nothing ->
+          -- ...
+```
+
+This kind of handling is extremely awkward in Elm, and writing this way discards
+what we've already learned about using `Maybe` to represent emptiness. Elm's
+core libraries also provide the `Result` type to allow us to represent the
+possibility of a failure to return something the same way would use `Maybe` to
+represent having nothing to return. The definition of `Result` is also familiar:
+
+```elm
+type Result a b = Err a | Ok b
+```
+
+We once again have two type constructors to represent two possibilities. On one
+side we have the `Err` case and any data type we'd like to associate with error,
+and on the other we have `Ok` and a data type that we are interested in
+computing. We can then pattern match once to handle both cases and have access
+to the information in either case. Let's reimagine the previous example using
+`Result`:
+
+```elm
+callback : Result MyError MyData -> MyOutput
+callback result =
+  case result of
+    Err error ->
+      -- error is an instance of a MyError type
+    Ok data ->
+      -- dat is an instance of a MyData type
+```
+
+`Result` is most commonly found in the core libraries when working with
+`Json.Decode` functions, as parsing JSON is something that may fail at runtime
+if the input is malformed. We can't detect that the input is malformed at
+compile time, and Elm does not provide a concept of exceptions and `try/catch`
+so we can use `Result` to model the output.
+
+## Conclusions
+
+Languages like JavaScript handle the concept of emptiness with low-level values
+like `null` and `undefined`, and may also use those to represent failure and
+success. These concepts are hard to represent in a statically typed language
+without introducing a common class of bugs. Elm stands out as providing
+exceptionally reliable programs, and one of the ways it does this is by using a
+more general language construct, union types, to bring the concepts of emptiness
+and failure outside of values and add that information to a type instead of
+interleaving it. Instead of having a value which might be a number or `null`, we
+have `Just` a number or `Nothing`, and the compiler helps us deal with that.
+Instead of representing failure and success by emptiness or resorting to an
+exception system, we have either an `Err` with some information, or some `Ok`
+data. Elm helps us to model our data in a way that makes sense so that we can
+depend on the language for reliability instead of requiring the language to
+depend on us.
