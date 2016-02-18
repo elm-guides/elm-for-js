@@ -43,7 +43,7 @@ not included as a part of Elm, they wouldn't work regardless because `undefined`
 and `null` are not of type `Int` or any other type. This is a major contributor
 to the reliability of Elm applications.
 
-## `Maybe` arrises from these properties of Elm
+## `Maybe` arises from these properties of Elm
 
 This rigid static nature of types in Elm makes our programs very reliable and
 eliminates an entire class of bugs, but we still need to be able to represent
@@ -142,7 +142,7 @@ we must pattern match, and in doing so we must consciously acknowledge every
 possible pattern that we can encounter. Further more, we can't attempt to
 fraudulently add a `Maybe Int` to another `Int` because the compiler doesn't
 know how to add those two types together. The operation doesn't make logical
-sense, and instead of reflecting that fact at runtime through a construct like
+sense, and instead of reflecting that fact at run-time through a construct like
 `NaN`, the compiler simply refuses to compile the code.
 
 To attempt to add 1 to the result of our search for 6, we must first check that
