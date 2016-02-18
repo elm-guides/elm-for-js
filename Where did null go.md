@@ -18,7 +18,7 @@ const foundSix = array.find((x) => x === 6); // foundSix === undefined
 ```
 
 The return value of the `find` method in this scenario is either a `number`, or
-`undefined` to indicate to us that the item we were looking for is not present
+`undefined` to indicate to us that the item we we are looking for is not present
 in the array. This type of API, and the presence of values like `null` and
 `undefined` in our programming language put the idea of emptiness on an
 equivalent level to the concept of the value of a variable. In dynamic languages
@@ -27,10 +27,10 @@ languages like C# the concept of emptiness requires additional type information
 to denote, but the same rules apply: a variable of a type, provided it is
 allowed to be `null`, can be `null` at any time.
 
-This requires the us as programmers to perform checks when we expect a value
-might be `null` or `undefined`, and - because humans are not perfect - a major
-category of bugs manifests itself as the Null Reference Error when we forget to
-check or incorrectly expect that a value will never be null.
+This requires us as programmers to perform checks when we expect a value
+might be `null` or `undefined`.  Humans are not perfect, therefore a major
+category of bugs manifests itself such as the Null Reference Error when we
+forget to check or incorrectly expect that a value will never be null.
 
 ## `null` is not allowed in Elm
 
@@ -110,7 +110,7 @@ is of type `Maybe Int` and represents the case where we do have the item of
 interest. If it isn't equal, we continue our search over the remaining items
 recursively.
 
-The base case of our recursion is that where there is nothing left in the list.
+The base case of our recursion is that when there is nothing left in the list.
 We've exhausted every possibility and found nothing that matches. In this case
 we return the aptly named `Nothing`, which is also of type `Maybe Int` in this
 context, but has no data associated with it because we've got no information to
