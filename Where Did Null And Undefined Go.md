@@ -40,20 +40,24 @@ only called with `Int` values. This prevents us from calling that function with
 `String` values, etc., but it also precludes the situation explained earlier
 where the value might be `null` or `undefined`. Not only are `null` and
 `undefined` not included as a part of Elm, they wouldn't work regardless because
-`undefined` and `null` are not of type `Int` or any other type. This is a major
-contributor to the reliability of Elm applications.
+`undefined` and `null` are not of type `Int` or any other type.
 
 ## `Maybe` arises from these properties of Elm
 
-This rigid static nature of types in Elm makes our programs very reliable and
-eliminates an entire class of bugs, but we still need to be able to represent
-lack of value! Consider again the scenario where we want to attempt to find
-an element in an Elm `List Int`, as opposed to the JavaScript array. We still
-may not find the thing we were looking for, and since Elm types are static we
-need a single type to represent the possible absence of the `Int` we are trying
-to find. `Maybe` is that type.
+Even though we no longer have a concept of `null` and `undefined`, we still need
+to be able represent optional values. Consider again the scenario where we want
+to attempt to find an element in an Elm `List Int`, as opposed to the JavaScript
+array. We still may not find the thing we were looking for, and since Elm types
+are static we need a single type to represent the possible absence of the `Int`
+we are trying to find. `Maybe` is that type. Furthermore, because types are
+static, a function which returns an `Int` rather than a `Maybe Int` will
+_always_ return an `Int`, so there is never uncertainty or need for unnecessary
+`null` checks. The `Maybe` type fully describes the presence of an optional
+value.
 
-In the language nomenclature, `Maybe` is a "type constructor", meaning its full
+## `Maybe` in Elm
+
+In the language nomenclature, `Maybe` is a type constructor, meaning its full
 signature is `Maybe a`. Here, `a` stands in for any other type and indicates to
 us that `Maybe` is really a container for other types that serves to add some
 additional meaning to a value: whether or not the value we want is present.
@@ -66,12 +70,52 @@ type Maybe a = Just a | Nothing
 
 By defining this, we are establishing a type, `Maybe a`, and two possible _type
 constructors_ for that type, `Just a` and `Nothing`. Invoking either type
-constructor like a function or value will give us an instance of `Maybe` which
-is the particular member that we used to construct. If we want to represent a
-non-empty value of 5, we can invoke `Just 5` to get a `Maybe Int`. If we don't
-have a value, we simply pass around `Nothing` since it has no arguments. Now we
-know what `Maybe` looks like in Elm, but it may not yet be clear what it is for
-or why we need it.
+constructor like a function or value will give us a `Maybe` value which is the
+particular member that we used to construct. If we want to represent a non-empty
+value of 5, we can invoke `Just 5` to get a `Maybe Int`. If we don't have a
+value, we simply pass around `Nothing` since it has no arguments.
+
+As a union type, `Maybe` is also a data structure in the same way as `List`.
+`Maybe` is a container for a single element, and as a container we are able to
+define a couple functions that are available for container structures like
+`List` and `Task`.
+
+#### `map`
+```elm
+map : (a -> b) -> Maybe a -> Maybe b`
+```
+
+Given a `Maybe a` value, transform its contained item from `a` to `b` in
+the case that it is `Just a`, and pass through if it is `Nothing`.
+
+#### `andThen`
+
+```elm
+andThen : Maybe a -> (a -> Maybe b) -> Maybe b
+```
+
+Given a `Maybe a`, chain a computation which produces a new `Maybe b` from the
+contained element when the value is `Just a`, and pass through `Nothing` when it
+is `Nothing`. This allows us to chain multiple `Maybe`-production computations
+together without worrying about `null` checks along the way. If any of the
+`Maybe` values in the chain are `Nothing` we will get `Nothing` back without
+error.
+
+`Maybe` also falls into a group of types where some possibilities are
+represented and one of those possibilities is most often of primary interest. In
+the case of `Maybe`, it's most common to be interested in working with the value
+under the `Just` case. Types with this property often come with a `withDefault`
+function for collapsing the `Maybe` using some acceptable default value.
+
+#### `withDefault`
+
+```elm
+withDefault : a -> Maybe a -> a
+```
+
+Given a default value of type `a` and some `Maybe a`, return either the value
+contained by the `Maybe` when it is `Just a` or the default value when it is
+`Nothing`.
 
 ## Illustrating `Maybe` by example
 
@@ -175,12 +219,12 @@ just pass through another `Nothing`. Elm has raised the concept of emptiness
 from something like `null` that could occur in any variable and brought it
 outside the actual data type of the value we want to use. It adds that
 information on top of the underlying value and forces us to deal with both cases
-via pattern matching, making our code reliable, robust and complete by default.
+via pattern matching.
 
 Note also that in the above example we simply passed through for the `Nothing`
-case. This particular situation is a special case of matching on `Maybe` that is
-simplified for us by `Maybe.map` in the core `Maybe` module. We could rewrite
-the code as
+case. In this case we are passing `Nothing` straight through and only interested
+in transforming the value under `Just`. This case is handled for us more
+succinctly by `Maybe.map`. We could rewrite the code as
 
 ```elm
 shouldBeSeven : Maybe Int
@@ -205,7 +249,7 @@ function callback(err, data) {
 ```
 
 The absence of an error indicates that there was no error. In Elm we could write
-a similar function, it might look like this:
+a similar function that might look like this:
 
 ```elm
 callback : Maybe MyError -> Maybe MyData -> MyOutput
@@ -222,10 +266,13 @@ callback maybeError maybeData =
 ```
 
 This kind of handling is extremely awkward in Elm, and writing this way discards
-what we've already learned about using `Maybe` to represent emptiness. Elm's
-core libraries also provide the `Result` type to allow us to represent the
-possibility of a failure to return something the same way would use `Maybe` to
-represent having nothing to return. The definition of `Result` is also familiar:
+what we've already learned about using `Maybe` to represent emptiness.
+Furthermore, there is no reason our function must accept exactly one `Just
+MyError` or `Just MyData` and one `Nothing`, making this pattern unpredictable.
+To deal with cases like this Elm's core libraries also provide the `Result` type
+to allow us to represent the possibility of a failure to return something the
+same way would use `Maybe` to represent having nothing to return. The definition
+of `Result` is also familiar:
 
 ```elm
 type Result a b = Err a | Ok b
@@ -235,17 +282,19 @@ We once again have two type constructors to represent two possibilities. On one
 side we have the `Err` case and any data type we'd like to associate with error,
 and on the other we have `Ok` and a data type that we are interested in
 computing. We can then pattern match once to handle both cases and have access
-to the information in either case. Let's reimagine the previous example using
-`Result`:
+to the information in either case. Like `Maybe`, we also know that if a function
+doesn't return a `Result` then there is no possibility its computation will fail
+and we can be confident in calling it without safeguards and error handling.
+Let's reimagine the previous node-style callback example using `Result`:
 
 ```elm
 callback : Result MyError MyData -> MyOutput
 callback result =
   case result of
     Err error ->
-      -- error is an instance of a MyError type
+      -- error is a value of type MyError
     Ok data ->
-      -- dat is an instance of a MyData type
+      -- data is a value of type MyData
 ```
 
 `Result` is most commonly found in the core libraries when working with
@@ -259,14 +308,10 @@ so we can use `Result` to model the output.
 Languages like JavaScript handle the concept of emptiness with low-level values
 like `null` and `undefined`, and may also use those to represent failure and
 success. These concepts are hard to represent in a statically typed language
-without introducing a common class of bugs. Elm stands out as providing
-exceptionally reliable programs, and one of the ways it does this is by using a
-more general language construct, union types, to bring the concepts of emptiness
-and failure outside of values and add that information to a type instead of
-interleaving it. Instead of having a value which might be a number or `null`, we
-have `Just` a number or `Nothing`, and the compiler helps us deal with that.
-Instead of representing failure and success by emptiness or resorting to an
-exception system, we have either an `Err` with some information, or some `Ok`
-data. Elm helps us to model our data in a way that makes sense so that we can
-depend on the language for reliability instead of requiring the language to
-depend on us.
+without introducing a common class of bugs. Elm uses container types to bring
+the concepts of emptiness and failure outside of values and add that information
+to a type instead of interleaving it. Instead of having a value which might be a
+number or `null`, we have `Just` a number or `Nothing`, and the compiler helps
+us deal with that. Instead of representing failure and success by emptiness or
+resorting to an exception system, we have either an `Err` with some information,
+or some `Ok` data.
