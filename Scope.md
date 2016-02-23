@@ -51,7 +51,7 @@ You can find more details on the syntax page, but this practice in general is di
 forces you to type the long `exposing` keyword.)
 
 Elm also imports some values and types by default. The full list is
-[here](http://package.elm-lang.org/packages/elm-lang/core/2.1.0/#default-imports), but the most important thing to know
+[here](http://package.elm-lang.org/packages/elm-lang/core/latest/#default-imports), but the most important thing to know
 is that all of [Basics](http://package.elm-lang.org/packages/elm-lang/core/latest/Basics) is imported exposed. The List,
 Maybe, and Signal modules and types are also available to you without an explicit import.
 
