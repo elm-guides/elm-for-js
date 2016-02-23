@@ -14,7 +14,7 @@ This guide will augment the official Elm docs as needed, for a smooth transition
 2. Create a new file `Main.elm` in a new folder.
 3. `$ elm package install` to set up `elm-package.json` and `elm-stuff/` for deps (similar to node).
 4. Paste the source from the [Hello World example](http://elm-lang.org/examples/hello-html) to your local `Main.elm` file.
-5. `$ elm install package evancz/elm-html` to install the missing package dependency.
+5. `$ elm package install evancz/elm-html` to install the missing package dependency.
 6. `$ elm-reactor` to get the dev server running at `http://0.0.0.0:8000/`.
 7. Success! 
 8. For a standalone file you can run `$ elm make Main.elm --output=main.html` (default is a JS file).
