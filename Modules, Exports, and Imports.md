@@ -217,15 +217,19 @@ also use exported tags qualified, like `MyModule.Increment`.
 
 ## Opaque Types
 
-An opaque type is a union type where the type is exported but the tag(s) are not. Someone outside the module can see
-that the type exists, and pass it around, store it in records. They only thing they *can't* do is look inside the type,
+An **opaque type** is a union type where the type is exported but the tag(s) are not. Someone outside the module can see
+that the type exists, pass it around, and store it in records. They only thing they *can't* do is look inside the type,
 even if they know what the tags are named. Hence, it's opaque.
 
-Opaque types are Elm's way of enforcing information hiding. They allow a package author to define an interface of
-functions to create, update, and read useful values out of the type. The implementation can change completely, but as
-long as all functions on the type are updated to match, it's still considered a minor change. This gives package writers
-flexibility when writing their libraries. It also lets them rely on invariants, assured that the client hasn't meddled
-with values of the type in unexpected ways.
+An example of an opaque type would be a 2D point. Creating a point would require either `x` and `y`, or `r` and `theta`.
+Each value could be accessed individually from a given point. The point might actually store all four, knowing that
+there's no way for someone to create a point that's inconsistent.
+
+What this means is that opaque types are Elm's way of enforcing information hiding. They allow a package author to
+define an interface of functions to create, update, and read useful values out of the opaque type. The implementation
+can change completely, but as long as all functions on the type are updated to match, it's still considered a patch
+change. This gives package writers flexibility when writing their libraries. It also lets them rely on invariants,
+assured that the client hasn't meddled with values of the type in unexpected ways.
 
 Opaque types are less useful in applications. If you're typing to simply pass information around, exporting record type
 aliases is fine. If it makes sense to also define operations on these models, an opaque type might be a better fit.
@@ -285,8 +289,9 @@ age person =
 
 When writing a package, it's often useful to write tests or examples that use it. But, you don't want these to be
 included with the package, and certainly not in the compiled code that uses your package. Elm's tooling does not
-(currently) have an equivalent of Node's dev-dependencies or Ruby on Rails' development environment. So here's a trick to
-keep tests and their libraries separate from your package, while still being able to run the tests without publishing.
+(currently) have an equivalent of Node's dev-dependencies or Ruby on Rails' development environment. So here is a trick
+to keep tests and their libraries separate from your package, while still being able to run the tests without
+publishing.
 
 Create a new folder, say `test`, and copy `elm-package.json` there. Edit it and make these changes:
   * Change the version to `0.0.1`. This isn't strictly necessary but it helps prevent the tests from being released as their own package.
@@ -298,4 +303,5 @@ into `test/elm-package.json` and they won't affect the main package. If the pack
 to manually sync them to `test/elm-package.json`.
 
 You can now write your tests or examples and import modules in your package as if it was installed in
-`elm-package.json`, but instead it's pulling from the parent repo with the original source.
+`elm-package.json`, but instead it's pulling from the parent folder with the original source. You just need to run `elm
+package` or `elm reactor` from inside the `test` folder.
