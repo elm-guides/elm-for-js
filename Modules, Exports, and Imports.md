@@ -2,15 +2,14 @@
 
 Elm's core libraries are organized into modules, as are any third-party packages you may use. For your own large
 applications, you can define your own modules. However defined, you need to import from modules to get useful values and
-types fro your program.
+types for your program.
 
-First we'll introduce the two types of Elm programs and how they affect how you use modules. Then we'll learn how
-modules relate to files (very closely), and then how to define your own modules and control what they export. Next we'll
-learn the right and wrong ways to import from a module. Then we'll see how exports can be a form of information hiding,
-and when that is useful. Finally we'll learn a trick to organize tests or examples.
-
-Along the way, we'll see both ways to structure code well, and ways to shoot yourself in the foot. We'll also learn more
-about Elm's tooling and `elm-package.json`.
+After reading this guide you will know
+* how to organize many modules within the file system
+* how to define a module's interface in a way that permits refactoring without breaking downstream code
+* how to use the import statements so you always know where a piece of code came from
+* how to organize tests or examples to not interfere with application code
+* the best practices and common pitfalls of writing a large Elm codebase
 
 This shouldn't be the first guide on Elm you read, but if you've playing around for a few hours and have specific
 questions about modules and the like, you should be fine. This guide aims to be a comprehensive reference to be read
@@ -47,7 +46,7 @@ can afford to be more permissive.
 
 ## Modules and Files
 
-Every file contains exactly one module. Filenames should be capitalized and match the name of the module they contain.
+Every file contains exactly one module. *Filenames should be capitalized* and match the name of the module they contain.
 For example, `Foo.elm` should declare the module `Foo`. The compiler will not allow module names and file paths to
 disagree.
 
@@ -144,15 +143,16 @@ came from, and the odds of a name collision is much higher.
 
 ```elm
 -- Antipatten!
-import Html exposing (..)
+import Dict exposing (..)
 ```
 
 Regardless, exposing happens when you import. This makes it different from exporting, which happens at export. Many
 people and even Elm's tooling conflate the two, but if you're being technical they are distinct.
 
-Infix operators must be imported exposed, for example as `import Json.Encode exposing (object2, (:=))`. The language
-does not have syntax for qualified infix operators. The good news is that, with the exception of the previous example,
-all infix ops in core are imported exposed by default.
+Infix operators must be imported exposed, for example as `import Json.Encode exposing (object2, (:=))`. Note that infix
+operators need to be surrounded by extra parentheses. The language does not have syntax for qualified infix operators.
+The good news is that, with the exception of the previous example, all infix ops in core are imported exposed by
+default.
 
 Specifically, all of the arithmetic operators are in
 [Basics](http://package.elm-lang.org/packages/elm-lang/core/latest/Basics), which is imported exposed automatically.
