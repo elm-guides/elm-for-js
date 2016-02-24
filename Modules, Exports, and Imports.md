@@ -56,7 +56,7 @@ keep all source files in there. You'll need edit `elm-package.json` to read `"so
 forget the comma; `elm package` doesn't give a helpful error on invalid JSON).
 
 Module names can contain dots, for example `Json.Encode`, which is in file `src/Json/Encode.elm`. Folders may be nested
-as deep as you like, but don't overdo it. Sometimes a package will have a primary package `Foo` and a secondary package
+as deep as you like, but don't overdo it. Sometimes a package will have a primary module `Foo` and a secondary module
 `Foo.Bar`. This is just the coincidence of having a file named the same as a folder (except the `.elm` extension);
 there's nothing "magic" about it.
 
