@@ -8,7 +8,7 @@ After reading this guide you will know
 * how to organize many modules within the file system
 * how to define a module's interface in a way that permits refactoring without breaking downstream code
 * how to use the import statements so you always know where a piece of code came from
-* how to organize tests or examples to not interfere with application code
+* how to organize tests or examples to not interfere with the main codebase
 * the best practices and common pitfalls of writing a large Elm codebase
 
 This shouldn't be the first guide on Elm you read, but if you've playing around for a few hours and have specific
@@ -258,7 +258,7 @@ redLight =
 ```
 
 You cannot make an opaque type out of a type alias; those are either exported or not, just like values. But you can
-create a union type to hide it. (This is more common when to opaque type represents a model rather than an action.)
+create a union type to hide it. (This is more common when the opaque type represents a model rather than an action.)
 
 ```elm
 module Person (Person, age) where
