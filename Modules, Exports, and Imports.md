@@ -146,8 +146,11 @@ came from, and the odds of a name collision is much higher.
 import Dict exposing (..)
 ```
 
-Regardless, exposing happens when you import. This makes it different from exporting, which happens at export. Many
-people and even Elm's tooling conflate the two, but if you're being technical they are distinct.
+`Dict.insert` will now be available as `insert`. This can easily be confused with other insert operations, although the
+compiler will stop you in truly ambiguous cases. So don't expose an entire module unless you're really sure about it.
+
+Regardless, exposing happens when you import. This makes it different from exporting, which happens when modules are
+defined. Many people and even Elm's tooling conflate the two, but if you're being technical they are distinct.
 
 Infix operators must be imported exposed, for example as `import Json.Encode exposing (object2, (:=))`. Note that infix
 operators need to be surrounded by extra parentheses. The language does not have syntax for qualified infix operators.
