@@ -212,7 +212,8 @@ ever.
 
 The trouble with exporting tags is not only that you may want to remove some, which will break any code that relies on
 the ones being removed. Even adding tags will break code, because previously exhaustive pattern matches are no longer
-exhaustive. If only some of the tags are exported, it's impossible to write a valid `case` statement.
+exhaustive. If only some of the tags are exported, it's impossible to write a valid `case` statement (at least not
+without a `_ ->` pattern, which are discouraged).
 
 Importing union types exposed follows the exact same syntax. For example, `import MyModule exposing (Action)` will
 import only the type, while `import MyModule exposing (Action(..))` will import any exported tags as well. You can
