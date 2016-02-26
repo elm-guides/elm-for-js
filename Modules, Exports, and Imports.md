@@ -239,7 +239,7 @@ Opaque types are less useful in applications. If you're typing to simply pass in
 aliases is fine. If it makes sense to also define operations on these models, an opaque type might be a better fit.
 
 If your union type contains many tags, you can export functions that wrap them. You can be selective about which ones
-you export. Sometimes it can be tedious, but it does make a difference.
+you export. Sometimes it can be tedious, but it's worth it.
 
 ```elm
 module Road (Action, addCar, redLight) where
