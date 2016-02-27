@@ -18,7 +18,7 @@ const foundSix = array.find((x) => x === 6); // foundSix === undefined
 ```
 
 The return value of the `find` method in this scenario is either a `number`, or
-`undefined` to indicate to us that the item we we are looking for is not present
+`undefined` to indicate to us that the item we are looking for is not present
 in the array. This type of API, and the presence of values like `null` and
 `undefined` in our programming language put the idea of emptiness on an
 equivalent level to the concept of the value of a variable. In dynamic languages
