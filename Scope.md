@@ -1,10 +1,10 @@
 # Scope in Elm
+In Elm as in JavaScript, **scope** refers to what is defined, and where. It is the answer to the question, "where did
+this thing come from?", which you will ask constantly when reading examples or someone else's code. Scope also can tell
+you why something *isn't* available, what code defines similar values, and where you can find documentation.
 
-In Elm as in JavaScript, *scope* refers to what is defined, and where. Scope in Elm is often simpler because ordinary
-values do not change over time. Understanding scope is helpful because it allows you to figure out where values and
-types are coming from when you read someone else's code, including examples. It also gives us a tour of the language.
-
-Not counting syntax (e.g. `if`, `->`, and `[`), pretty much everything in Elm is either a literal, something you imported, or
+Scope in Elm is often simpler than in other languages because ordinary values do not change over time. Not counting
+syntax (e.g. `if`, `->`, and brackets), pretty much everything in Elm is either a literal, something you imported, or
 something you defined.
 
 ## Literals
@@ -47,7 +47,7 @@ import Dict exposing (Dict)
 
 The `Dict` in parentheses refers to the type, not the module. All the module-scoped values like `Dict.insert` are still
 available. You can expose multiple values and types from a module by separating them with commas inside the parentheses.
-You can find more details on the syntax page, but this practice in general is discouraged. (This is why the language
+You can find more details in [this guide](Modules, Exports, and Imports.md), but this practice in general is discouraged. (This is why the language
 forces you to type the long `exposing` keyword.)
 
 Elm also imports some values and types by default. The full list is
@@ -128,4 +128,32 @@ silly foo =
   in foo
 
 silly 5 == 12 -- True
+```
+
+## Capitalized Values
+
+Usually, capitalization indicates a type. [Type annotations](How to Read a Type Annotation.md) exist as a miniature
+language separate from regular Elm code. But there are two ways that capitalized values can slip into actual Elm code.
+
+The first is a record type alias. If I define `type alias Point2D = {x : Float, y : Float}`, then like any type alias
+`Point2D` becomes a valid type to use in annotations. But because we're aliasing a record, we also gain a *record
+constructor*, `Point2D : Float -> Float -> Point2D`. For example, `origin = Point2D 0 0` becomes legal, and this is
+actual Elm code, not an annotation. `Point2D` is both a type and a function.
+
+The second are the tags of a union type. For example, as tree: `type Tree a = Leaf | Node a (Tree a) (Tree a)`. Each tag
+becomes a value or function (depending on whether it takes any arguments). In this case, we get the value `Leaf : Tree
+a` and `Node : a -> Tree a -> Tree a -> Tree a`. It's these tags, not the `Tree` type, that are used as pattern matches
+in `case` statements. Although less common, it's possible to define a union type with a tag the same name as the type.
+In that case, that name would be both a type and a value or function.
+
+## .accessors
+
+Finally, record accessors. Uniquely these functions are defined by a pattern, rather than being listed somewhere. For
+example, `.name : { b | name : a } -> a`, which basically means `.name` takes any record with a `name` field and
+extracts its value. You can use any record field name you like.
+
+Beware of creating data structures with record accessors. Because all a list's elements must have the same type, each
+record accessor must extract a value of the same type, which is usually not what you want.
+```elm
+[.name, .number] : List ({ b | name : a, number : a } -> a)
 ```
