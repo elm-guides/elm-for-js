@@ -28,10 +28,8 @@ Writing them is optional, but highly encouraged. Type annotations improve code b
 answer : Int
 answer = 42
 
--- An update function that takes 2 params (Action, Model) and returns a Model (last).
+-- An update function that takes 2 params - an Action, then a Model and returns a Model (last).
 update : Action -> Model -> Model
--- could also be written as
-update : (Action, Model) -> Model
 ```
 
 In JavaScript, params are handled at the same time. In Elm, they are [curried](https://gist.github.com/jamischarles/3c22acd58e6d4ab26a41). For example:
