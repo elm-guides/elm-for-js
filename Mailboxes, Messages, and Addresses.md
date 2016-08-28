@@ -1,3 +1,8 @@
+***This essay was written for Elm 0.16 and was made completely irrelevant by 0.17. Unless you have a historical curiosity, do not read this essay, as it will only confuse you.***
+
+----
+
+
 # Mailboxes, Messages, and Addresses
 
 *Note: This essay assumes basic familiarity with Elm.*
