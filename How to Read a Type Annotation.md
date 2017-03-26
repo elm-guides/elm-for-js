@@ -1,4 +1,4 @@
-#How to Read a Type Annotation
+# How to Read a Type Annotation
 
 If you come from a dynamically typed language like JavaScript or Ruby, or even a statically typed C-family language like
 Java, Elm's type annotations will look very strange. However, once you know how to read them, they make a lot more sense
@@ -173,5 +173,5 @@ To use any of these types, just use their name in an annotation instead of a spe
 
 If one of these types appears multiple times in a type annotation, all occurrences must resolve to the same type. You
 can allow them to be different by sticking something on to the end of the type, like `appendable2` or similar. For
-example, if you enter `(4, 2)` into the Elm REPL, it will infer the type `(number, number')`. The apostrophe indicates
+example, if you enter `(4, 2)` into the Elm REPL, it will infer the type `(number, number1)`. The -`1` indicates
 that the second number need not be the same type as the first.
