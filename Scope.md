@@ -47,7 +47,7 @@ import Dict exposing (Dict)
 
 The `Dict` in parentheses refers to the type, not the module. All the module-scoped values like `Dict.insert` are still
 available. You can expose multiple values and types from a module by separating them with commas inside the parentheses.
-You can find more details in [this guide](Modules, Exports, and Imports.md), but this practice in general is discouraged. (This is why the language
+You can find more details in [this guide](/Modules%2C%20Exports%2C%20and%20Imports.md), but this practice in general is discouraged. (This is why the language
 forces you to type the long `exposing` keyword.)
 
 Elm also imports some values and types by default. The full list is
@@ -132,7 +132,7 @@ silly 5 == 12 -- True
 
 ## Capitalized Values
 
-Usually, capitalization indicates a type. [Type annotations](How to Read a Type Annotation.md) exist as a miniature
+Usually, capitalization indicates a type. [Type annotations](/How%20to%20Read%20a%20Type%20Annotation.md) exist as a miniature
 language separate from regular Elm code. But there are two ways that capitalized values can slip into actual Elm code.
 
 The first is a record type alias. If I define `type alias Point2D = {x : Float, y : Float}`, then like any type alias
