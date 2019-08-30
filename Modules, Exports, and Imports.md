@@ -136,7 +136,7 @@ entire module into the current one. When there are multiple such imports, it bec
 came from, and the odds of a name collision is much higher.
 
 ```elm
--- Antipatten!
+-- Antipattern!
 import Dict exposing (..)
 ```
 
